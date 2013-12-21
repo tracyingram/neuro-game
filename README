@@ -1,0 +1,5 @@
+EEG graping program for processing (processing.org) with added logging
+Will create CSV logs in the running directory
+confirmed working with processing 2.0b6
+
+run brain_grapher.pde
