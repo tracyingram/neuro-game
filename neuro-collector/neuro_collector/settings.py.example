@@ -1,0 +1,2 @@
+# User "neuro" with password "neuro", database "neuro"
+DATABASE_URI = 'mysql://neuro:neuro@localhost/neuro'
