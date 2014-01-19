@@ -39,6 +39,7 @@ db_session = scoped_session(lambda: create_session(bind=engine))
 def init_db():
     global engine
     engine = create_engine(settings.DATABASE_URI)
+    Base.metadata.create_all(bind=engine)
 
 
 def record_sensors(timestamp, device, sensors):

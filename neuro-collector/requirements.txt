@@ -1,2 +1,4 @@
+# MySQL-python only necessary if you're using a MySQL database
 MySQL-python
 SQLAlchemy
+gevent

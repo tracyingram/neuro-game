@@ -2,7 +2,7 @@ import math
 import socket
 import time
 
-from neuro_collector import ADDRESS, pack_step
+from .server import ADDRESS, pack_step
 
 
 class NeuroClient(object):

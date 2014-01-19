@@ -45,6 +45,8 @@ def get_server():
     return SocketServer.UDPServer(ADDRESS, SensorDataHandler)
 
 
-def serve_forever():
+if __name__ == '__main__':
+    print 'Serving on {}:{}'.format(*ADDRESS)
+
     server = get_server()
     server.serve_forever()

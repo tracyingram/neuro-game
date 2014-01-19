@@ -4,7 +4,7 @@ import pytest
 from mock import Mock
 from sqlalchemy import create_engine
 
-from neuro_client import NeuroClient
+from neuro_collector.client import NeuroClient
 from neuro_collector import server, recorder
 from neuro_collector.server import get_server, pack_step, unpack_step
 
