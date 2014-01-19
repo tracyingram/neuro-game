@@ -1,0 +1,3 @@
+#!/bin/bash
+echo 'NOTE: you may have to run this command as root: sudo '$0
+python -m neuro_collector.clients.mindflex.__init__
