@@ -2,4 +2,5 @@
 # names, so here's the official mapping of devices names to IDs.
 DEVICES = {
     'emotiv': 0,
+    'mindflex': 1,
 }
