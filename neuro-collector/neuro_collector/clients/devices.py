@@ -3,4 +3,5 @@
 DEVICES = {
     'emotiv': 0,
     'mindflex': 1,
+    'blink': 2,
 }
