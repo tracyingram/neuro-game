@@ -13,7 +13,7 @@ MAX_TIME_BETWEEN_BLINKS = 5000
 
 client = NeuroClient(DEVICES['blink'])
 
-screen = pygame.display.set_mode((640, 480))
+screen = pygame.display.set_mode((640, 480), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 
 halt = False
