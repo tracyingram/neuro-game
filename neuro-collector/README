@@ -1,0 +1,18 @@
+Remember, sudo password is "tampahack" on tampahack box
+
+To change the time a symptom is displayed on screen, or the interval between symptoms, open:
+  
+  neuro-game/neuro-collector/neuro_collector/clients/symptoms/__init__.py
+
+And edit the following lines:
+
+  TIME_SYMPTOM_ON_SCREEN = 3000
+  TIME_SYMPTOM_OFF_SCREEN = 1000
+
+
+1. cd neuro-game/neuro-collector
+2. Start server: ./run_server
+3. Start mindflex: sudo ./run_mindflex_client
+4. Start blink client: ./run_blink_client
+   or
+   Start symptoms: ./run_symptoms_client
