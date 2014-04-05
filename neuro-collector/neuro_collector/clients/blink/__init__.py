@@ -3,7 +3,6 @@ import pygame
 pygame.init()
 
 from neuro_collector.client import NeuroClient
-from neuro_collector.clients.devices import DEVICES
 
 
 TIME_BLINK_ON_SCREEN = 500
@@ -11,7 +10,7 @@ MIN_TIME_BETWEEN_BLINKS = 1000
 MAX_TIME_BETWEEN_BLINKS = 5000
 
 
-client = NeuroClient(DEVICES['blink'])
+client = NeuroClient('blink')
 
 screen = pygame.display.set_mode((640, 480), pygame.FULLSCREEN)
 clock = pygame.time.Clock()

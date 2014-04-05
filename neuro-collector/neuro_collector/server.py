@@ -4,30 +4,36 @@ import struct
 from .recorder import record_sensors
 
 
-HEADER = struct.Struct('QB')
+TIMESTAMP = struct.Struct('Q')
 ADDRESS = ('127.0.0.1', 6556)
 
 
 def pack_step(timestamp, device, sensors):
-    header = HEADER.pack(timestamp, device)
+    header = TIMESTAMP.pack(timestamp) + device + '\0'
     pieces = []
     for sensor, value in sensors.iteritems():
-        pieces.append('\0'.join((sensor, struct.pack('f', value))))
+        pieces.append('{}\0{}\0'.format(sensor, value))
     return header + ''.join(pieces)
 
 
 def unpack_step(data):
-    timestamp, device = HEADER.unpack(data[:HEADER.size])
+    timestamp, = TIMESTAMP.unpack(data[:TIMESTAMP.size])
+
+    i = TIMESTAMP.size
+    device_length = data[i:].index('\0')
+    device = data[i:i + device_length]
+
+    i += device_length + 1
 
     sensors = {}
-    i = HEADER.size
-    value_size = struct.calcsize('f')
     while i < len(data):
         sensor_length = data[i:].index('\0')
         sensor = data[i:i + sensor_length]
         i += sensor_length + 1
-        value, = struct.unpack('f', data[i:i + value_size])
-        i += value_size
+
+        value_length = data[i:].index('\0')
+        value = data[i:i + value_length]
+        i += value_length + 1
 
         sensors[sensor] = value
 

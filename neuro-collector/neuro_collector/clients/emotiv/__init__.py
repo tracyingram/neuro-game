@@ -1,7 +1,6 @@
 import gevent
 
 from . import emotiv
-from ..devices import DEVICES
 from ...client import NeuroClient
 
 
@@ -10,7 +9,7 @@ tick = 1.00 / tickrate
 
 
 if __name__ == '__main__':
-    client = NeuroClient(DEVICES['emotiv'])
+    client = NeuroClient('emotiv')
 
     headset = emotiv.Emotiv()
     gevent.spawn(headset.setup)

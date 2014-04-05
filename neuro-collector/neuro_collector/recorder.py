@@ -19,15 +19,15 @@ class TimeStep(Base):
 
     id = Column('id', Integer, primary_key=True)
     ts = Column('ts', Integer)
-    device = Column('device', Integer)
+    device = Column('device', String(32))
 
 
 class SensorValue(Base):
     __tablename__ = 'sensor_values'
 
     step_id = Column('step_id', ForeignKey('time_steps.id'), primary_key=True)
-    sensor = Column('sensor', String(), primary_key=True)
-    value = Column('value', Float)
+    sensor = Column('sensor', String(32), primary_key=True)
+    value = Column('value', String(512))
 
     step = relationship(TimeStep, backref=backref('values', lazy='joined'))
 

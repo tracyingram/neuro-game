@@ -1,7 +1,6 @@
 import gevent
 import serial
 
-from ..devices import DEVICES
 from ...client import NeuroClient
 
 
@@ -26,7 +25,7 @@ SENSORS = [
 
 
 if __name__ == '__main__':
-    client = NeuroClient(DEVICES['mindflex'])
+    client = NeuroClient('mindflex')
     comm = serial.Serial(DEVICE_PATH)
 
     while True:
