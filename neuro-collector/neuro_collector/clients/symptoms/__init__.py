@@ -10,15 +10,15 @@ from neuro_collector.client import NeuroClient
 from neuro_collector.clients.symptoms.wrap import render_wrap
 
 
-TIME_SYMPTOM_ON_SCREEN = 5000
-MIN_TIME_BETWEEN_SYMPTOMS = 3000
-MAX_TIME_BETWEEN_SYMPTOMS = 3000
+TIME_SYMPTOM_ON_SCREEN = 3000
+TIME_SYMPTOM_OFF_SCREEN = 1000
+
 
 curdir = os.path.dirname(__file__)
 path = os.path.join(curdir, 'symptoms.csv')
 with open(path) as fp:
     reader = csv.reader(fp)
-    symptoms = list(reader)
+    symptoms = [row[:2] for row in reader]
 
 
 _symptoms_left = list(symptoms)
@@ -46,12 +46,7 @@ explanation_font = pygame.font.SysFont('Arial', 30)
 explanation = explanation_font.render('Do you experience...', True, (0, 0, 0))
 
 
-def get_random_ms(min_ms=MIN_TIME_BETWEEN_SYMPTOMS,
-                  max_ms=MAX_TIME_BETWEEN_SYMPTOMS):
-    return random.randint(min_ms, max_ms)
-
-
-pygame.time.set_timer(pygame.USEREVENT, get_random_ms())
+pygame.time.set_timer(pygame.USEREVENT, TIME_SYMPTOM_OFF_SCREEN)
 
 while not halt:
     for event in pygame.event.get():
@@ -64,7 +59,7 @@ while not halt:
         elif event.type == pygame.USEREVENT:
             if symptom_on_screen:
                 symptom_on_screen = False
-                pygame.time.set_timer(pygame.USEREVENT, get_random_ms())
+                pygame.time.set_timer(pygame.USEREVENT, TIME_SYMPTOM_OFF_SCREEN)
                 client.record_sensors({'symptom': '', 'group': ''})
             else:
                 symptom_on_screen = True
