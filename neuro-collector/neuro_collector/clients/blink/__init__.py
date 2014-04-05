@@ -1,4 +1,6 @@
 import random
+import sys
+
 import pygame
 pygame.init()
 
@@ -54,3 +56,5 @@ while not halt:
 
     pygame.display.flip()
     clock.tick(60)
+else:
+    sys.exit(0)
