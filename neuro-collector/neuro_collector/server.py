@@ -1,7 +1,7 @@
 import SocketServer
 import struct
 
-from .recorder import record_sensors
+from neuro_collector.recorder import record_sensors
 
 
 TIMESTAMP = struct.Struct('Q')
