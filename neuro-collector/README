@@ -1,14 +1,5 @@
-Remember, sudo password is "tampahack" on tampahack box
-
-To change the time a symptom is displayed on screen, or the interval between symptoms, open:
-  
-  neuro-game/neuro-collector/neuro_collector/clients/symptoms/__init__.py
-
-And edit the following lines:
-
-  TIME_SYMPTOM_ON_SCREEN = 3000
-  TIME_SYMPTOM_OFF_SCREEN = 1000
-
+To collect data from the mindflex and pair it with the "blink" or symptoms
+programs, do the following:
 
 1. cd neuro-game/neuro-collector
 2. Start server: ./run_server
@@ -16,3 +7,25 @@ And edit the following lines:
 4. Start blink client: ./run_blink_client
    or
    Start symptoms: ./run_symptoms_client
+
+Remember, sudo password is "tampahack" on tampahack box
+
+
+
+To change the mechanics of the symptoms client, open:
+
+    neuro-game/neuro-collector/neuro_collector/clients/symptoms/__init__.py
+
+To change how long the symptom and "do you experience" text stays on screen, edit:
+
+    TIME_SYMPTOM_ON_SCREEN = 3000
+
+To change how long "BLINK" stays on screen, edit:
+
+    TIME_BLINK_ON_SCREEN = 500
+
+To change how long the screen is blank between symptoms and "blink", edit:
+
+    TIME_SCREEN_BLANK = 1000
+
+All time is in milliseconds.
