@@ -1,3 +1,4 @@
+import xlwt
 from sqlalchemy import (Column, Integer, ForeignKey, create_engine, Float,
                         String)
 from sqlalchemy.ext.declarative import declarative_base
@@ -40,6 +41,41 @@ def init_db():
     global engine
     engine = create_engine(settings.DATABASE_URI)
     Base.metadata.create_all(bind=engine)
+
+
+def export_data(name='export.xls'):
+    session = db_session()
+    book = xlwt.Workbook()
+
+    # Names of all devices in database
+    devices = zip(*list(session.query(TimeStep.device).distinct()))[0]
+    for device in devices:
+        sheet = book.add_sheet(device)
+
+        # Names of all sensors recorded, to build dedicated columns for each
+        sensors = zip(*list(session.query(SensorValue.sensor)
+                                   .join(TimeStep)
+                                   .filter(TimeStep.device == device)
+                                   .distinct()))[0]
+
+        # Records the rows we'll later write to the spreadsheet
+        # First row is the header
+        rows = [('Timestamp',) + sensors]
+
+        time_steps = (session.query(TimeStep).filter(TimeStep.device == device)
+                                             .order_by(TimeStep.ts.asc())
+                                             .values(TimeStep.id, TimeStep.ts))
+        for step_id, timestamp in time_steps:
+            values = dict(session.query(SensorValue)
+                                 .filter(SensorValue.step_id == step_id)
+                                 .values(SensorValue.sensor, SensorValue.value))
+            rows.append([timestamp] + [values.get(s, '') for s in sensors])
+
+        for r, row in enumerate(rows):
+            for c, value in enumerate(row):
+                sheet.write(r, c, value)
+
+    book.save(name)
 
 
 def record_sensors(timestamp, device, sensors):
