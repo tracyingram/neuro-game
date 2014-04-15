@@ -40,6 +40,12 @@ db_session = scoped_session(lambda: create_session(bind=engine))
 def init_db():
     global engine
     engine = create_engine(settings.DATABASE_URI)
+    engine.connect()
+    Base.metadata.create_all(bind=engine)
+
+
+def reset_db():
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
 
@@ -48,15 +54,22 @@ def export_data(name='export.xls'):
     book = xlwt.Workbook()
 
     # Names of all devices in database
-    devices = zip(*list(session.query(TimeStep.device).distinct()))[0]
+    try:
+        devices = zip(*list(session.query(TimeStep.device).distinct()))[0]
+    except IndexError:
+        return False
+
     for device in devices:
         sheet = book.add_sheet(device)
 
         # Names of all sensors recorded, to build dedicated columns for each
-        sensors = zip(*list(session.query(SensorValue.sensor)
-                                   .join(TimeStep)
-                                   .filter(TimeStep.device == device)
-                                   .distinct()))[0]
+        try:
+            sensors = zip(*list(session.query(SensorValue.sensor)
+                                       .join(TimeStep)
+                                       .filter(TimeStep.device == device)
+                                       .distinct()))[0]
+        except IndexError:
+            continue
 
         # Records the rows we'll later write to the spreadsheet
         # First row is the header
@@ -76,6 +89,7 @@ def export_data(name='export.xls'):
                 sheet.write(r, c, value)
 
     book.save(name)
+    return True
 
 
 def record_sensors(timestamp, device, sensors):

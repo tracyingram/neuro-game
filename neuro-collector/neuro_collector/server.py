@@ -1,7 +1,11 @@
+import os
 import SocketServer
 import struct
+from datetime import datetime
+from threading import Thread
 
-from neuro_collector.recorder import record_sensors
+from neuro_collector.recorder import (record_sensors, export_data, init_db,
+                                      reset_db)
 
 
 TIMESTAMP = struct.Struct('Q')
@@ -53,6 +57,32 @@ def get_server():
 
 if __name__ == '__main__':
     print 'Serving on {}:{}'.format(*ADDRESS)
+
+    init_db()
+
+    def exporter():
+        while True:
+            try:
+                print datetime.now()
+                name = raw_input('Type a name and press Enter to export '
+                                 '(leave blank to restart recording): ').strip()
+                if name:
+                    filename = name + '.xls'
+                    if export_data(filename):
+                        print 'Saved to', filename
+                    else:
+                        print 'No data to save!'
+
+                reset_db()
+                print 'Reset database'
+                print
+            except (KeyboardInterrupt, SystemExit, EOFError):
+                print 'Quitting...'
+                os._exit(0)
+
+    _export_thread = Thread(target=exporter)
+    _export_thread.daemon = True
+    _export_thread.start()
 
     server = get_server()
     server.serve_forever()
